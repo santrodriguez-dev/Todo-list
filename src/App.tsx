@@ -4,18 +4,21 @@ import { CreateTodo } from './components/CreateTodo'
 import { useTodosContext } from './contexts/todo'
 
 const App = (): JSX.Element => {
-  const { todos, handleAddTodo, handleClearAllCompleted } = useTodosContext()
+  const { handleClearAllCompleted } = useTodosContext()
 
   return (
     <div>
       <header>
-        <h1>TODO</h1>
-        <CreateTodo saveTodo={handleAddTodo}/>
+        <h1>#TODO App</h1>
+        <CreateTodo />
       </header>
-      <Todos todos={todos}></Todos>
+      <main>
+        <Todos />
+      </main>
+
       <footer>
         Footer
-        <button onClick={handleClearAllCompleted}>Borrar completados</button>
+        <button onClick={handleClearAllCompleted} id='clearAllBtn'>Borrar completados</button>
       </footer>
     </div>
   )

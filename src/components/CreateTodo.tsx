@@ -1,23 +1,36 @@
 import { useRef } from 'react'
+import { useTodosContext } from '../contexts/todo'
 
-interface Props {
-  saveTodo: (newTodo: string) => void
-}
-
-export const CreateTodo: React.FC<Props> = ({ saveTodo }) => {
+export const CreateTodo: React.FC = () => {
+  const { handleAddTodo } = useTodosContext()
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
-    const inputValue = inputRef.current
-    if (inputValue === null) return
-    if (e.key === 'Enter' && inputValue.value.trim() !== '') {
-      saveTodo(inputValue.value.trim())
-      inputValue.value = ''
+    const input = inputRef.current
+    if (input === null) return
+    if (e.key === 'Enter' && input.value.trim() !== '') {
+      handleAddTodo(input.value.trim())
+      input.value = ''
     }
   }
 
-  return <input
-    type="text"
-    onKeyDown={handleKeyDown}
-    ref={inputRef} />
+  const addTodo = () => {
+    const input = inputRef.current
+    if (input === null) return
+    handleAddTodo(input.value.trim())
+    input.value = ''
+  }
+
+  return (
+    <div>
+      <input
+        type="text"
+        aria-label='create-todo-input'
+        onKeyDown={handleKeyDown}
+        ref={inputRef} />
+      <button
+        aria-label='submit-btn'
+        onClick={addTodo}>Add</button>
+    </div>
+  )
 }

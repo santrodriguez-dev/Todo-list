@@ -30,6 +30,7 @@ interface State {
 const reducer = (state: State, action: Action) => {
   if (action.type === ActionTypes.CREATE) {
     const { title } = action.payload
+    if (title === '') return state
 
     // Comprobar repetidos
     const map = new Map(state.todos.map(todo => [todo.title, true]))
@@ -41,6 +42,7 @@ const reducer = (state: State, action: Action) => {
       todos: state.todos.concat(newTodo)
     }
   }
+
   if (action.type === ActionTypes.REMOVE) {
     const { id } = action.payload
 
@@ -49,6 +51,7 @@ const reducer = (state: State, action: Action) => {
       todos: state.todos.filter(todo => todo.id !== id)
     }
   }
+
   if (action.type === ActionTypes.COMPLETED) {
     const { id } = action.payload
     return {
