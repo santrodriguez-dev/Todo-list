@@ -3,8 +3,10 @@ import App from './App.tsx'
 import './index.css'
 import { TodosProvider } from './contexts/todo.tsx'
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-    <TodosProvider>
-        <App />
-    </TodosProvider>
+const app = (
+  <TodosProvider>
+    <App />
+  </TodosProvider>
 )
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(app)

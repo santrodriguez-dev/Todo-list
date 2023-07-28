@@ -1,5 +1,5 @@
 import { useReducer } from 'react'
-import { type Todo } from '../types'
+import { type Todo } from '../types/types'
 import { mockTodos } from '../mocks/todos'
 
 const initialState = {

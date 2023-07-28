@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, test } from 'vitest'
 import { fireEvent, render, screen } from '@testing-library/react'
 import App from '../App'
 import { TodosProvider } from '../contexts/todo'
+import { randomBetween } from '../utils/utils'
 
 const myApp = (
   <TodosProvider>
@@ -66,5 +67,17 @@ describe('Fire events from app', () => {
     if (delButton === null) return
     fireEvent.click(delButton)
     expect(initialItems.length - 1).toBe((await screen.findAllByRole('listitem')).length)
+  })
+
+  test('Mark a random todo', async () => {
+    const itemsList = await screen.findAllByRole('listitem')
+    const randomItem = randomBetween(-1, itemsList.length)
+
+    const checkbox = itemsList[randomItem]?.querySelector('input[type="checkbox"]') as HTMLInputElement
+
+    const { checked } = checkbox
+
+    fireEvent.click(checkbox)
+    expect(checked).toBe(!checkbox.checked)
   })
 })

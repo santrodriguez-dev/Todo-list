@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 import { useTodos } from '../hooks/useTodos'
-import { type Todo } from '../types'
+import { type Todo } from '../types/types'
 
 interface ContextType {
   handleAddTodo: (title: string) => void
