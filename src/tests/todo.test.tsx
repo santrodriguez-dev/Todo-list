@@ -20,7 +20,7 @@ describe('Todo App renders properly', () => {
   })
 
   it('Should render Title correctly', () => {
-    screen.getByText('#TODO App')
+    screen.getByText('TODO')
   })
 
   test('should render button "Borrar completados"', async () => {
