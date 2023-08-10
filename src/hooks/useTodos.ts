@@ -27,9 +27,7 @@ type Action =
   | { type: ActionTypes.CLEAR_COMPLETED }
 
 interface State {
-  // sync: boolean
   todos: Todo[]
-  // filterSelected: FilterValue
 }
 
 const reducer = (state: State, action: Action) => {
@@ -43,7 +41,7 @@ const reducer = (state: State, action: Action) => {
 
     const newTodo = { id: crypto.randomUUID(), title, completed: false }
     const todos = state.todos.concat(newTodo)
-    localStorage.setItem('todos', JSON.stringify(todos))
+    syncWithLS(todos)
     return {
       ...state, todos
     }
@@ -64,7 +62,7 @@ const reducer = (state: State, action: Action) => {
       if (todo.id !== id) return todo
       return { ...todo, completed: !todo.completed }
     })
-    localStorage.setItem('todos', JSON.stringify(todos))
+    syncWithLS(todos)
     return {
       ...state,
       todos
@@ -77,7 +75,7 @@ const reducer = (state: State, action: Action) => {
       if (todo.id !== id) return todo
       return { ...todo, title }
     })
-    localStorage.setItem('todos', JSON.stringify(todos))
+    syncWithLS(todos)
     return {
       ...state,
       todos
@@ -88,12 +86,17 @@ const reducer = (state: State, action: Action) => {
     const todos = state.todos.map(todo => {
       return { ...todo, completed: false }
     })
+    syncWithLS(todos)
     return {
       ...state,
       todos
     }
   }
   return state
+}
+
+function syncWithLS (todos: Todo[]) {
+  localStorage.setItem('todos', JSON.stringify(todos))
 }
 
 export const useTodos = () => {
