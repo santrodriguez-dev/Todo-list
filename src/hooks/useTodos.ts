@@ -2,8 +2,13 @@ import { useReducer } from 'react'
 import { type Todo } from '../types/types'
 import { mockTodos } from '../mocks/todos'
 
+const getDataFromLS = () => {
+  const data = localStorage.getItem('todos')
+  return (data != null) ? JSON.parse(data) : mockTodos
+}
+
 const initialState = {
-  todos: mockTodos
+  todos: getDataFromLS()
 }
 
 enum ActionTypes {
@@ -37,9 +42,10 @@ const reducer = (state: State, action: Action) => {
     if (map.get(title) ?? false) return state
 
     const newTodo = { id: crypto.randomUUID(), title, completed: false }
+    const todos = state.todos.concat(newTodo)
+    localStorage.setItem('todos', JSON.stringify(todos))
     return {
-      ...state,
-      todos: state.todos.concat(newTodo)
+      ...state, todos
     }
   }
 
@@ -54,32 +60,37 @@ const reducer = (state: State, action: Action) => {
 
   if (action.type === ActionTypes.COMPLETED) {
     const { id } = action.payload
+    const todos = state.todos.map(todo => {
+      if (todo.id !== id) return todo
+      return { ...todo, completed: !todo.completed }
+    })
+    localStorage.setItem('todos', JSON.stringify(todos))
     return {
       ...state,
-      todos: state.todos.map(todo => {
-        if (todo.id !== id) return todo
-        return { ...todo, completed: !todo.completed }
-      })
+      todos
     }
   }
 
   if (action.type === ActionTypes.UPDATE_TITLE) {
     const { id, title } = action.payload
+    const todos = state.todos.map(todo => {
+      if (todo.id !== id) return todo
+      return { ...todo, title }
+    })
+    localStorage.setItem('todos', JSON.stringify(todos))
     return {
       ...state,
-      todos: state.todos.map(todo => {
-        if (todo.id !== id) return todo
-        return { ...todo, title }
-      })
+      todos
     }
   }
 
   if (action.type === ActionTypes.CLEAR_COMPLETED) {
+    const todos = state.todos.map(todo => {
+      return { ...todo, completed: false }
+    })
     return {
       ...state,
-      todos: state.todos.map(todo => {
-        return { ...todo, completed: false }
-      })
+      todos
     }
   }
   return state

@@ -8,10 +8,6 @@ export const Todo: React.FC<TodoInterface> = ({ id, title, completed }) => {
 
   const { handleRemoveTodo, handleCompleted, handleUpdateTitle } = useTodosContext()
 
-  const handleKeyDown = () => {
-
-  }
-
   return (
     <div className="flex items-center mb-3 gap-3">
       <input
@@ -26,7 +22,6 @@ export const Todo: React.FC<TodoInterface> = ({ id, title, completed }) => {
         <input
           value={inputValue}
           onChange={(e) => { setInputValue(e.target.value) }}
-          onKeyDown={handleKeyDown}
           onBlur={() => { handleUpdateTitle(id, inputValue) }}
           type="text"
           id="small-input"
